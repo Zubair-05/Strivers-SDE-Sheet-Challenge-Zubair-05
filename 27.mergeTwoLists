@@ -1,0 +1,47 @@
+//Iterative Approach
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* a, ListNode* b) {
+        ListNode* fh = NULL;
+        
+        if(!a) return b;
+        if(!b) return a;
+        
+        if(a->val < b->val) fh = a, a = a->next;
+        else fh = b, b = b->next;
+
+        ListNode* ft = fh;
+        while(a && b){
+            if(a->val < b->val){
+                ft->next = a;
+                a = a->next;
+            } else {
+                ft->next = b;
+                b = b->next;
+            }
+
+            ft = ft->next;
+        }
+        if(a) ft->next = a;
+        else ft->next = b;
+
+        return fh;
+    }
+};
+
+//recursive approach
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* a, ListNode* b) {
+        ListNode* fh = NULL;
+        
+        if(!a) return b;
+        if(!b) return a;
+    
+        if(a->val < b->val) fh = a, fh->next =  mergeTwoLists(a->next, b);
+        else fh = b,fh->next =  mergeTwoLists(a, b->next);
+
+        return fh;
+
+    }
+};
