@@ -1,0 +1,67 @@
+//My Approach
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if(!head) return NULL;
+        Node* dummy = new Node(0);
+        Node* ans = dummy;
+    
+        map<int, Node*>newer;
+        map<Node*, int> old;
+        Node* temp = head;
+        int i =0;
+        while(temp){
+            Node* n = new Node(temp->val);
+            dummy->next = n;
+            newer[i] = n; 
+            old[temp] = i;
+            dummy = dummy->next;
+            temp = temp->next;
+            i++;
+        }
+        for(auto it:newer){
+            cout<<it.first<<" "<<(it.second)->val<<endl;
+        }
+        temp = head;
+        dummy = ans->next;
+        i = 0;
+        while(temp){
+            Node* ran = NULL;
+            if(temp->random){
+                ran =  newer[old[temp->random]];
+            }
+             
+            dummy->random = ran;
+            dummy = dummy->next;
+            temp = temp->next;
+        }
+
+        return ans->next;
+    }
+};
+
+
+//optimal Approach
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if(!head) return NULL;
+        map<Node*, Node*> mp;
+        Node* temp = head;
+        while(temp){
+            Node* node = new Node(temp->val);
+            mp[temp] = node;
+            temp = temp->next;
+        }
+
+        temp = head;
+        while(temp){
+            mp[temp]->next = mp[temp->next] ?  mp[temp->next] : NULL;
+            mp[temp]->random = mp[temp->random] ? mp[temp->random] : NULL;
+            temp = temp->next;
+        }
+
+        return mp[head];
+
+    }
+};
