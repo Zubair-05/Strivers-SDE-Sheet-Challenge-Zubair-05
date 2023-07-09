@@ -1,0 +1,36 @@
+class Solution 
+{
+    public:
+    //Function to find the maximum profit and the number of jobs done.
+    static bool cmp(Job a, Job b){
+        return a.profit > b.profit;
+    }
+    vector<int> JobScheduling(Job arr[], int n) 
+    { 
+        vector<Job> v(n);
+        for(int i=0; i<n; i++){
+            v[i] = arr[i];
+        }
+        sort(v.begin(), v.end(), cmp);
+        // for(auto it:v){
+        //     cout<<it.id<<" "<<it.dead<<" "<<it.profit<<endl;
+        // }
+        int maxi = v[0].dead;
+        for(int i=1; i<n; i++){
+            maxi = max(maxi, v[i].dead);
+        }
+        vector<int> slot(maxi+1, -1);
+        int maxProfit = 0, cnt = 0;
+        for(int i=0; i<n; i++){
+            for(int j=v[i].dead; j>0; j--){
+                if(slot[j] == -1){
+                    slot[j] =1 ;
+                    maxProfit += v[i].profit;
+                    cnt++;
+                    break;
+                }
+            }
+        }
+        return {cnt, maxProfit};
+    } 
+};
