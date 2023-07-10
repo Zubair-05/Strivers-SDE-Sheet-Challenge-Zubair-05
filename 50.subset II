@@ -1,0 +1,53 @@
+class Solution {
+public:
+    void f(int ind, vector<int> nums, vector<int>& temp, vector<vector<int>>& ans){
+        ans.push_back(temp);
+
+        for(int i = ind; i<nums.size(); i++){
+            if(i!=ind && nums[i] == nums[i-1]) continue;
+
+            temp.push_back(nums[i]);
+            f(i+1, nums, temp, ans);
+            temp.pop_back();
+        }
+    }
+
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<int> temp;
+        
+        vector<vector<int>> ans;
+        sort(nums.begin(), nums.end());
+        f(0, nums, temp, ans);
+        
+        return ans;
+    }
+};
+
+My approach: using set
+class Solution {
+public:
+    void f(int ind, vector<int> nums, vector<int>& temp, set<vector<int>>& ans){
+        if(ind == nums.size()){
+            ans.insert(temp);
+            return;
+        }
+      
+
+        temp.push_back(nums[ind]);
+        f(ind+1, nums, temp, ans);
+        temp.pop_back();
+
+        f(ind+1, nums, temp, ans);
+    }
+
+
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<int> temp;
+        set<vector<int>> ans;
+        vector<vector<int>> res;
+        sort(nums.begin(), nums.end());
+        f(0, nums, temp, ans);
+        for(auto it:ans) res.push_back(it);
+        return res;
+    }
+};
