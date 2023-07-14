@@ -1,0 +1,35 @@
+class Solution{
+    public:
+    
+    void f(int i, int j, int n, string temp, vector<string>& ans, vector<vector<int>> &m, vector<vector<int>>& vis){
+        if(i==n-1 && j==n-1){
+            ans.push_back(temp);
+            return;
+        }
+        
+        string str = "URDL";
+        vector<int> dx = {-1, 0, 1, 0};
+        vector<int> dy = {0, 1, 0, -1};
+        
+        for(int k=0; k<4; k++){
+            int newi = i + dx[k];
+            int newj = j + dy[k];
+            if(newi >=0 && newi<n && newj>=0 && newj<n && m[newi][newj] == 1 && vis[newi][newj] == -1){
+                vis[newi][newj] = 1;
+                f(newi, newj, n, temp+str[k], ans, m, vis);
+                vis[newi][newj] = -1;
+            }
+        }
+    }
+    
+    
+    vector<string> findPath(vector<vector<int>> &m, int n) {
+        vector<string> ans;
+        string temp;
+        vector<vector<int>> vis(n, vector<int>(n, -1));
+        vis[0][0] = 1;
+        if(m[0][0] == 0) return ans;
+        f(0, 0, n, temp, ans, m, vis);
+        return ans;
+    }
+};
