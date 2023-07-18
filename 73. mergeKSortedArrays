@@ -1,0 +1,22 @@
+#include <queue>
+#include <vector>
+
+vector<int> mergeKSortedArrays(vector<vector<int>>&kArrays, int k)
+{
+    
+   priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minHeap; 
+    vector<int> ans;
+    vector<int> ind(k, 0);
+    for(int i=0; i<k; i++){
+        minHeap.push({kArrays[i][0], i });
+    }
+    while(!minHeap.empty()){
+        pair<int, int> p = minHeap.top();
+        ans.push_back(p.first);
+        minHeap.pop();
+        if (ind[p.second] + 1 < kArrays[p.second].size()) {
+            minHeap.push({kArrays[p.second][ind[p.second] + 1], p.second});
+            ind[p.second]++;
+        } }
+    return ans;
+}
