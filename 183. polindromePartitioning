@@ -1,0 +1,29 @@
+#include <bits/stdc++.h> 
+
+bool ispol(int i, int j, string str){
+    if(i>=j) return true;
+//     if(str[i] != str[j]) return false; 
+    return ispol(i+1, j-1, str) && (str[i] == str[j]) ;
+}
+
+int f(int i, int j, string str, vector<vector<int>>& dp){
+    if(i>=j || ispol(i, j ,str)) return 0;  
+    if(dp[i][j] != -1) return dp[i][j];
+    int mini = 1e9;
+    for(int k=i; k<=j-1; k++){
+        int left = (dp[i][k] != -1) ? dp[i][k] : f(i, k, str, dp);
+        int right = (dp[k+1][j] != -1) ? dp[k+1][j] : f(k+1, j, str, dp);
+//         int temp = f(i, k, str, dp) + f(k+1, j , str, dp) + 1;
+            int temp = 1 + left + right;
+        mini = min(temp , mini);
+    }
+    return dp[i][j] = mini;
+    
+}
+
+
+int palindromePartitioning(string str) {
+    int n = str.length();
+    vector<vector<int>> dp(n, vector<int> (n, -1));
+    return f(0, n-1, str, dp);
+}
