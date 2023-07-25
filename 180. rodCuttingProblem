@@ -1,0 +1,24 @@
+class Solution {
+public:
+ int dp[101][101];
+    int f(int start, int end, int cut_start, int cut_end, vector<int>& cuts){
+        if(cut_start > cut_end) return 0;
+        if(dp[cut_start][cut_end] != -1) return dp[cut_start][cut_end];
+        int mini = INT_MAX;
+        for(int i = cut_start; i<=cut_end; i++){
+            int firstCut = f(start, cuts[i], cut_start, i-1, cuts);
+            int secondCut = f(cuts[i], end, i+1, cut_end, cuts);
+            mini = min(mini, end-start + firstCut + secondCut);
+        }
+
+        return dp[cut_start][cut_end] = mini;
+    }
+
+
+    int minCost(int n, vector<int>& cuts) {
+        sort(cuts.begin(), cuts.end());
+        memset(dp,-1,sizeof(dp));
+        // vector<vector<int>> dp(n+1, vector<int>(n+1, -1));
+        return f(0, n, 0, cuts.size()-1, cuts);
+    }
+};
