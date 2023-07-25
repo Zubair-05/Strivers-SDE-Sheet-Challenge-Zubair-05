@@ -1,0 +1,48 @@
+//Best Method
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size(), maxi = 1;
+        vector<int> dp(n, 1);
+        for(int i=0; i<n; i++){
+            for(int prev = 0; prev<i; prev++){
+                if(nums[prev] < nums[i]){
+                    dp[i] = max(dp[i], 1 + dp[prev]);
+                }
+            }
+            maxi = max(maxi, dp[i]);
+        }
+        return maxi;
+    }
+};
+
+
+class Solution {
+public:
+    int f(int ind, int prevInd ,vector<int> nums, vector<vector<int>>& dp){
+        if(ind == nums.size()) return 0;
+        if(dp[ind][prevInd+1] != -1) return dp[ind][prevInd+1];
+        int len = 0 + f(ind+1, prevInd, nums, dp);
+        if(prevInd == -1 || nums[ind]>nums[prevInd]){
+            len = max(len, 1 + f(ind+1, ind, nums, dp));
+        }
+        return dp[ind][prevInd+1] = len;
+    }
+
+
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> dp(n+1, vector<int>(n+1, 0));
+        // return f(0, -1, nums, dp);
+        for(int ind=n-1; ind>=0 ;ind--){
+            for(int prevInd = ind-1; prevInd >= -1; prevInd--){
+                int len = dp[ind+1][prevInd+1];
+                if(prevInd == -1 || nums[ind] > nums[prevInd]){
+                    len = max(len,1+ dp[ind+1][ind+1]);
+                }
+                dp[ind][prevInd+1] = len;
+            }
+        }
+        return dp[0][0];
+    }
+};
