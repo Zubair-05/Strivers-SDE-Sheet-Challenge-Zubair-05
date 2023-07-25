@@ -22,3 +22,25 @@ public:
         return f(0, n, 0, cuts.size()-1, cuts);
     }
 };
+
+
+//CodeStudio
+
+int f(int ind, int n, vector<int> price){
+	if(ind == 0) return n*price[0];
+
+	int notTake = f(ind-1, n, price);
+	int take = INT_MIN;
+	int rodLength = ind+1;
+	if(rodLength <= n){
+		take = price[ind] + f(ind, n-rodLength, price);
+	}
+	return max(take, notTake);
+}
+
+
+
+int cutRod(vector<int> &price, int n)
+{
+	return f(n-1, n, price);
+}
