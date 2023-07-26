@@ -1,0 +1,44 @@
+// Stack class.
+class Stack {
+    
+public:
+    vector<int> st;
+    int size;
+    int n;
+    
+    Stack(int capacity) {
+        this->st.resize(capacity);
+        this->size = -1;
+        this->n = capacity;
+    }
+
+    void push(int num) {
+        if(size != n-1){
+            size++;
+            st[size] = num;
+        }
+    }
+
+    int pop() {
+        if(size != -1){
+            size--;
+            return st[size+1];
+        } return -1;
+    }
+    
+    int top() {
+       if(size != -1) return st[size];
+       return -1;
+    }
+    
+    int isEmpty() {
+        if(size == -1) return true;
+        return false;
+    }
+    
+    int isFull() {
+        if(size == n-1) return true;
+        return false;
+    }
+    
+};
