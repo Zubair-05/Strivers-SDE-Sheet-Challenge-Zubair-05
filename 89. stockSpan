@@ -1,0 +1,38 @@
+vector<int> findStockSpans(vector<int>& prices) {
+    int n = prices.size();
+    stack<pair<int, int>> st;
+    vector<int> ans;
+    for(int i=0; i<n; i++){
+        while(!st.empty() && st.top().first < prices[i]) st.pop();
+        if(st.empty()) ans.push_back(1);
+        else ans.push_back(i-st.top().second);
+
+        st.push({prices[i], i});
+    }
+
+    return ans;
+}
+
+class StockSpanner {
+public:
+    stack<pair<int, int>> st;
+    StockSpanner() {
+        
+    }
+    
+    int next(int price) {
+        int span = 1;
+        while(!st.empty() && st.top().first <= price){
+            span += st.top().second;
+            st.pop();
+        }
+        st.push({price, span});
+        return span; 
+    }
+};
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner* obj = new StockSpanner();
+ * int param_1 = obj->next(price);
+ */
