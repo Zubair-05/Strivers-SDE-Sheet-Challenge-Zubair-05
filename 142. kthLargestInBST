@@ -1,0 +1,22 @@
+class Solution
+{
+    public:
+    int ans;
+    void f(Node* root, int& k){
+        if(!root) return;
+        
+        f(root->right, k);
+        if(--k == 0){
+            ans = root->data;
+            return;
+        }
+        f(root->left, k);
+    }
+        
+    
+    int kthLargest(Node *root, int K)
+    {
+        f(root, K);
+        return ans;
+    }
+};
